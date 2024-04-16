@@ -17,7 +17,7 @@ import {
 import { Button, Divider, message, Space, Tabs } from "antd";
 import type { CSSProperties } from "react";
 import { useLoginStore } from "@stores/index";
-
+import  '../index.module.less'
 type LoginType = "phone" | "account";
 
 const iconStyles: CSSProperties = {
@@ -45,38 +45,41 @@ const Login = () => {
   return (
     <div
       style={{
-        backgroundColor: "white",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
         height: "100vh",
       }}
     >
       <LoginFormPage
-        backgroundImageUrl="https://gw.alipayobjects.com/zos/rmsportal/FfdJeJRQWjEeGTpqgBKj.png"
+        backgroundImageUrl="https://mdn.alipayobjects.com/yuyan_qk0oxh/afts/img/V-_oS6r-i7wAAAAAAAAAAAAAFl94AQBr"
         onFinish={onFinish as any}
-        title="react-template-admin"
+        title="宠物小窝后台管理系统"
+        logo="/logo.svg"
         subTitle="一个轻量级react后台管理系统"
-        activityConfig={{
-          style: {
-            boxShadow: "0px 0px 8px rgba(0, 0, 0, 0.2)",
-            color: "#fff",
-            borderRadius: 8,
-            backgroundColor: "#1677FF",
-          },
-          title: "活动标题，可配置图片",
-          subTitle: "活动介绍说明文字",
-          action: (
-            <Button
-              size="large"
-              style={{
-                borderRadius: 20,
-                background: "#fff",
-                color: "#1677FF",
-                width: 120,
-              }}
-            >
-              去看看
-            </Button>
-          ),
-        }}
+        // activityConfig={{
+        //   style: {
+        //     boxShadow: "0px 0px 8px rgba(0, 0, 0, 0.2)",
+        //     color: "#fff",
+        //     borderRadius: 8,
+        //     backgroundColor: "#1677FF",
+        //   },
+        //   title: "活动标题，可配置图片",
+        //   subTitle: "活动介绍说明文字",
+        //   action: (
+        //     <Button
+        //       size="large"
+        //       style={{
+        //         borderRadius: 20,
+        //         background: "#fff",
+        //         color: "#1677FF",
+        //         width: 120,
+        //       }}
+        //     >
+        //       去看看
+        //     </Button>
+        //   ),
+        // }}
         actions={
           <div
             style={{

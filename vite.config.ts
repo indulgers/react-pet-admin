@@ -11,5 +11,14 @@ export default defineConfig({
       "@utils": resolve(__dirname, "src", "utils"),
     },
   },
-  plugins: [react()],
+  css: {
+    preprocessorOptions: {
+      less: {
+        modifyVars: {
+
+        },
+        javascriptEnabled: true,
+      },
+    },
+  },
 });

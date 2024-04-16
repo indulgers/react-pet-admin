@@ -73,6 +73,7 @@ const BasicLayout: React.FC = () => {
         style={{
           overflow: "auto",
           height: "100vh",
+          background:'#fff'
         }}
         collapsible
         collapsed={collapsed}
@@ -80,13 +81,17 @@ const BasicLayout: React.FC = () => {
       >
         <div
           style={{
-            height: 32,
-            margin: 16,
+            height: 40,
+            margin: 20,
+            display:'flex',
+            alignItems:'center',
             background: "rgba(255, 255, 255, 0.2)",
-          }}
-        />
+          }}>
+           <img alt="logo" src="/logo.svg" style={{width:'32px',height:'32px'}} />
+           <h3 style={{margin:'0 5px'}}>宠物小屋</h3>
+        </div>
         <Menu
-          theme="dark"
+          theme="light"
           defaultSelectedKeys={[pathname]}
           defaultOpenKeys={renderOpenKeys()}
           mode="inline"
