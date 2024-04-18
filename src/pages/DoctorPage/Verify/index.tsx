@@ -140,7 +140,7 @@ const columns: ProColumns<GithubIssueItem>[] = [
   },
 ];
 
-const TablePage: React.FC = () => {
+const DoctorVerify: React.FC = () => {
   const actionRef = useRef<ActionType>();
   return (
     <ProTable<GithubIssueItem>
@@ -206,4 +206,4 @@ const TablePage: React.FC = () => {
   );
 };
 
-export default TablePage;
+export default DoctorVerify;

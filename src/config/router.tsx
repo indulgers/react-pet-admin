@@ -2,12 +2,12 @@ import React, { lazy } from "react";
 import ErrorPage from "@components/ErrorPage";
 import LoginPage from "../layout/components/Login";
 import Icon from "@components/IconComponent";
-import App, { authLoader } from "../App";
+import App from "../App";
+import { useLoginStore } from "@stores/index";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import {
   DashboardOutlined,
   EditOutlined,
-  TableOutlined,
   BarsOutlined,
   UserOutlined,
   UsergroupAddOutlined
@@ -15,13 +15,29 @@ import {
 
 const Dashboard = lazy(() => import("../pages/Dashboard"));
 const FormPage = lazy(() => import("../pages/FormPage"));
-const TablePage = lazy(() => import("../pages/TablePage"));
+const UserPage = lazy(() => import("../pages/UserPage"));
 const AdminPage = lazy(() => import("../pages/AdminPage"))
+const DoctorPage = lazy(() => import("../pages/DoctorPage"));
+const OperationPage = lazy(() => import("../pages/OperationPage"));
+const DoctorVerify = lazy(() => import("../pages/DoctorPage/Verify"));
 const AccountCenter = lazy(() => import("../pages/AccountPage/AccountCenter"));
 const AccountSettings = lazy(
   () => import("../pages/AccountPage/AccountSettings")
 );
 const DetailPage = lazy(() => import("../pages/DetailPage"));
+
+export const updateIsSuperAdmin = () => {
+  const userInfoString = localStorage.getItem("userInfo") || "[]";
+  const userInfo = JSON.parse(userInfoString);
+  const userRole = userInfo?.state?.userInfo?.role;
+  return { userRole };
+}
+export function authLoader() {
+  const { userRole } = updateIsSuperAdmin();
+  const isAdmin = userRole === 1 || userRole === 2;
+  const isSuperAdmin = userRole === 2;
+  return { isAdmin, isSuperAdmin};
+}
 
 const routes = [
   {
@@ -45,10 +61,17 @@ const routes = [
             element: <FormPage />,
           },
           {
-            path: "table",
-            title: "列表页",
-            icon: <TableOutlined />,
-            element: <TablePage />,
+            path: "user",
+            title: "用户管理",
+            icon: <UserOutlined />,
+            isAdmin: false,
+            children: [
+              {
+                path: "/user/index",
+                title: "用户列表",
+                element: <UserPage />,
+              },
+            ],
           },
           {
             path: "detail",
@@ -60,7 +83,7 @@ const routes = [
             path: '/admin',
             title: '管理员管理',
             icon: <UsergroupAddOutlined /> ,
-            access: 'canAdmin',
+            access: authLoader().isSuperAdmin,
             children:[
               {
                 path: '/admin',
@@ -68,11 +91,38 @@ const routes = [
                 redirect: '/admin/sub-page',
               },
               {
-                path: '/admin/sub-page',
+                path: '/admin/index',
                 title: "管理员列表",
-                element:<AdminPage/>
+                element:<AdminPage/>,
               },
             ]
+          },
+          {
+            path: 'doctor',
+            title: "医生管理",
+            icon: <Icon name="doctor" />,
+            children: [
+              {
+                path: "/doctor/verify",
+                title: "医生审核",
+                element: <DoctorVerify />,
+              },
+              {
+                path: "/doctor/index",
+                title: "医生列表",
+                element: <DoctorPage />,
+              }
+            ]
+          },
+          {
+            path: "operation",
+            title: "操作页",
+            icon: <BarsOutlined />,
+            element: <OperationPage />,
+          },
+          {
+            path: "*",
+            element: <Navigate to="/" replace={true} />,
           },
           {
             path: "account",
@@ -90,21 +140,6 @@ const routes = [
                 element: <AccountSettings />,
               },
             ],
-          },
-          {
-            path: 'doctor',
-            title: "医生管理",
-            icon: <Icon name="doctor" />,
-            children: [
-              {
-                path: "/doctor/verify",
-                title: "医生审核",
-              }
-            ]
-          },
-          {
-            path: "*",
-            element: <Navigate to="/" replace={true} />,
           },
         ],
       },

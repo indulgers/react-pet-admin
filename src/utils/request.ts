@@ -5,6 +5,7 @@ interface IRequestOptions {
   method: AxiosRequestConfig["method"];
   data?: AxiosRequestConfig["data"];
   params?: AxiosRequestConfig["params"];
+  userId?: string;
   headers?: AxiosRequestConfig["headers"];
 }
 interface IResponse<T = any> {
@@ -34,12 +35,13 @@ class HttpClient {
     data,
     params,
     headers,
+    userId,
   }: IRequestOptions): Promise<IResponse<T>> {
     const response = await this.instance.request<T>({
       url,
       method,
       data,
-      params,
+      params:{...params,userId},
       headers,
     });
     return {
@@ -50,6 +52,6 @@ class HttpClient {
   }
 }
 
-const http = new HttpClient();
+const http = new HttpClient('http://localhost:3000');
 
 export default http;

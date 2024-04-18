@@ -5,7 +5,6 @@ import type { ActionType, ProColumns } from "@ant-design/pro-components";
 import { ProTable, TableDropdown } from "@ant-design/pro-components";
 import { Button, Dropdown, Form , message} from "antd";
 import { createUser, getUserList, deleteUser, updateUser } from "@services/user";
-import { getAdminList } from "@services/admin";
 import {
   ModalForm,
   ProForm,
@@ -68,7 +67,6 @@ const columns: ProColumns<GithubIssueItem>[] = [
     valueEnum: {
       0: { text: "普通用户" },
       1: { text: "二级管理员" },
-      2: { text: "一级管理员" },
     },
     renderFormItem: (text, {record, index})=>{
       return authLoader().isSuperAdmin  ? <ProFormSelect
@@ -182,8 +180,7 @@ const columns: ProColumns<GithubIssueItem>[] = [
           }
            },
           { key: "delete", name: "删除",onClick:() => {
-            const  userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
-            deleteUser(record.id,userInfo?.id).then((res) => {
+            deleteUser(record.id).then((res) => {
               if (res.code !== 200) {
                 return;
               }
@@ -201,13 +198,13 @@ const columns: ProColumns<GithubIssueItem>[] = [
   },
 ];
 
-const AdminPage: React.FC = () => {
+const UserPage: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const [data, setData] = React.useState([]);
-  const [form] = Form.useForm<{ nickname: string; role: number }>();
+  const [form] = Form.useForm<{ name: string; company: string }>();
   const [isRenderModal, setIsRenderModal] = useState(false);
   useEffect(() => {
-    getAdminList().then((res) => {
+    getUserList().then((res) => {
       if (res.code !== 200) {
         return;
       }
@@ -247,22 +244,20 @@ const AdminPage: React.FC = () => {
         <ProForm.Group>
           <ProFormSelect
             options={[
-              { value: '0', label: '普通用户'},
               {
                 value: '1',
                 label: '二级管理员',
               },
-              {
-                value: '2',
-                label: '一级管理员',
-              }
+              // {
+              //   value: '2',
+              //   label: '一级管理员',
+              // }
             ]}
             width="xs"
             name="role"
             label="权限设置"
           />
         </ProForm.Group>
-
       </ModalForm>
     <ProTable<GithubIssueItem>
       columns={columns}
@@ -291,7 +286,7 @@ const AdminPage: React.FC = () => {
       search={{
         labelWidth: "auto",
       }}
-      headerTitle="管理员管理"
+      headerTitle="高级表格"
       toolBarRender={() => [
         <Button
           key="button"
@@ -334,4 +329,4 @@ const AdminPage: React.FC = () => {
   );
 };
 
-export default AdminPage;
+export default UserPage;

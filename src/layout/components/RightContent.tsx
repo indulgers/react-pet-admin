@@ -3,14 +3,19 @@ import { Avatar, Dropdown, MenuProps, Button, Input, Badge, Space } from "antd";
 import { SkinOutlined, BellOutlined } from "@ant-design/icons";
 import { useLoginStore, useGlobalStore } from "@stores/index";
 import { debounce } from "@utils/func";
+import { useNavigate } from "react-router-dom";
 import styles from "../index.module.less";
 
 const RightContent: React.FC = () => {
   const { setUserInfo } = useLoginStore();
   const { setColor, primaryColor } = useGlobalStore();
+  const navigate = useNavigate();
   const logoutHandle = () => {
     setUserInfo(null);
   };
+  const toUserCenter = () => {  
+    navigate("/account/center");
+  }
   const items: MenuProps["items"] = [
     {
       key: "1",
@@ -18,7 +23,7 @@ const RightContent: React.FC = () => {
     },
     {
       key: "2",
-      label: "个人中心",
+      label: <span onClick={toUserCenter}>个人中心</span>,
     },
   ];
 

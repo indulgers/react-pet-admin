@@ -14,10 +14,10 @@ import { useLoginStore } from "@stores/index";
 import { routes } from "../config/router";
 import NoAuthPage from "@components/NoAuthPage";
 import "antd/dist/reset.css";
-
 type RouteType = NonIndexRouteObject & {
   title: string;
   icon: React.ReactElement;
+  access?: boolean;
 };
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -30,7 +30,7 @@ const BasicLayout: React.FC = () => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-  const { isAdmin } = useLoaderData() as any;
+  const { isAdmin, isSuperAdmin } = useLoaderData() as any;
 
   const getItems: any = (children: RouteType[]) => {
     return children.map((item) => {
@@ -43,13 +43,14 @@ const BasicLayout: React.FC = () => {
         icon: item.icon,
         label: item.title,
         children: item.children ? getItems(item.children) : null,
+        access: item.access !== false ? "true" : "false", // Keep access as boolean
       };
     });
   };
-
   const menuItems: MenuProps["items"] = getItems(
-    routes[0].children![0].children.filter((item) => item.path !== "*")
-  );
+    routes[0].children![0].children.filter((item) => item.path !== "*" &&  ( item.access === true || item.access === undefined))
+    )
+  
 
   const onMenuClick: MenuProps["onClick"] = ({ key }) => {
     navigate(key);
@@ -73,9 +74,8 @@ const BasicLayout: React.FC = () => {
         style={{
           overflow: "auto",
           height: "100vh",
-          background:'#fff'
+          background: "#fff",
         }}
-        collapsible
         collapsed={collapsed}
         onCollapse={(value) => setCollapsed(value)}
       >
@@ -83,19 +83,20 @@ const BasicLayout: React.FC = () => {
           style={{
             height: 40,
             margin: 20,
-            display:'flex',
-            alignItems:'center',
+            display: "flex",
+            alignItems: "center",
             background: "rgba(255, 255, 255, 0.2)",
-          }}>
-           <img alt="logo" src="/logo.svg" style={{width:'32px',height:'32px'}} />
-           <h3 style={{margin:'0 5px'}}>宠物小屋</h3>
+          }}
+        >
+          <img alt="logo" src="/logo.svg" style={{ width: "32px", height: "32px" }} />
+          <h3 style={{ margin: '0 5px' }}>宠物小屋</h3>
         </div>
         <Menu
           theme="light"
           defaultSelectedKeys={[pathname]}
           defaultOpenKeys={renderOpenKeys()}
           mode="inline"
-          items={menuItems}
+          items={menuItems ? menuItems.filter((item: any) => item.access) : []}
           onClick={onMenuClick}
         />
       </Sider>

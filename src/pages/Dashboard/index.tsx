@@ -1,11 +1,23 @@
-import React from "react";
+import React,{ useEffect, useState} from "react";
 import { Row, Col } from "antd";
 import DemoCard from "./components/DemoCard";
 import DemoColumn from "./components/DemoColumn";
 import DemoPie from "./components/DemoPie";
 import DemoLine from "./components/DemoLine";
-
+import { authLoader } from "@config/router"
+import { useNavigate } from "react-router-dom";
 const Dashboard: React.FC = () => {
+  const navigate = useNavigate();
+  const [rerendered, setRerendered] = useState(false);
+
+  useEffect(() => {
+    // 在页面挂载后执行 authLoader 函数
+    authLoader();
+
+
+    
+  }, []); // 将 navigate 和 rerendered 状态作为依赖
+
   return (
     <React.Fragment>
       <DemoCard />

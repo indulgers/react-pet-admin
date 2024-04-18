@@ -14,8 +14,9 @@ import {
   ProFormCheckbox,
   ProFormText,
 } from "@ant-design/pro-components";
-import { Button, Divider, message, Space, Tabs } from "antd";
+import { Button, Divider, Form, message, Space, Tabs } from "antd";
 import type { CSSProperties } from "react";
+import { login, getUserInfo, getVerifyCode, captchaLogin } from "@services/index";
 import { useLoginStore } from "@stores/index";
 import  '../index.module.less'
 type LoginType = "phone" | "account";
@@ -33,14 +34,32 @@ function delay(ms: number) {
 
 const Login = () => {
   const [loginType, setLoginType] = useState<LoginType>("account");
-  const { setUserInfo } = useLoginStore();
+  const { setUserInfo,userInfo } = useLoginStore();
   const navigate = useNavigate();
-  const onFinish = (values: any) => {
-    return delay(1000).then(() => {
-      message.success("登录成功🎉🎉🎉");
-      setUserInfo(values);
-      navigate("/", { replace: true });
-    });
+  const [form] = Form.useForm();  
+  const [verifyCode, setVerifyCode] = useState<string>("");
+  const onFinish = async (values: any) => {
+    if(verifyCode){
+      const res = await captchaLogin(values);
+      if (res.code !== 200 && res.code !== 201) {
+        message.error(res.data.msg);
+        return;
+      }
+      const info = (await getUserInfo(res.data.data.user_id));
+      setUserInfo(info.data);
+      message.success("登录成功！");
+      navigate("/dashboard");
+      return;
+    }
+    const res = (await login(values)).data;
+    if (res.code === 200 || res.code === 201 || res.status === 200 || res.status === 201) {
+      const info = (await getUserInfo(res.data.user_id));
+      setUserInfo(info.data);
+      message.success("登录成功！");
+      navigate("/dashboard");
+    } else {
+      message.error(res.msg);
+    }
   };
   return (
     <div
@@ -173,7 +192,7 @@ const Login = () => {
                 size: "large",
                 prefix: <LockOutlined className={"prefixIcon"} />,
               }}
-              placeholder={"密码: 123456"}
+              placeholder={"请输入密码"}
               rules={[
                 {
                   required: true,
@@ -211,6 +230,8 @@ const Login = () => {
               captchaProps={{
                 size: "large",
               }}
+              phoneName={"mobile"}
+              value={verifyCode}
               placeholder={"请输入验证码"}
               captchaTextRender={(timing, count) => {
                 if (timing) {
@@ -218,15 +239,23 @@ const Login = () => {
                 }
                 return "获取验证码";
               }}
-              name="captcha"
+              name="verifyCode"
               rules={[
                 {
                   required: true,
                   message: "请输入验证码！",
                 },
               ]}
-              onGetCaptcha={async () => {
-                message.success("获取验证码成功！验证码为：1234");
+              onGetCaptcha={async (values) => { 
+                const obj ={
+                  mobile:values
+                }
+                const res = await getVerifyCode(obj);
+                if (res.code !== 200 && res.code !== 201) {
+                  return;
+                }
+                message.success(`获取验证码成功！验证码为：${res.data.data}`);
+                setVerifyCode(res.data.data);
               }}
             />
           </>

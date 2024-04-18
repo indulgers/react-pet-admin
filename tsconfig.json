@@ -20,8 +20,10 @@
       "@pages/*": ["pages/*"],
       "@components/*": ["components/*"],
       "@stores/*": ["stores/*"],
+      "@config/*": ["config/*"],
       "@services/*": ["services/*"],
-      "@utils/*": ["utils/*"]
+      "@utils/*": ["utils/*"],
+      "@*/": ["src/*"]
     }
   },
   "include": ["src"]

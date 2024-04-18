@@ -10,10 +10,6 @@ dayjs.locale("zh-cn");
 
 const BasicLayout = lazy(() => import("./layout"));
 
-export function authLoader() {
-  return { isAdmin: true };
-}
-
 const App: React.FC = () => {
   const { primaryColor } = useGlobalStore();
 
