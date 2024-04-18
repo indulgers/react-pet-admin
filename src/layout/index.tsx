@@ -48,7 +48,7 @@ const BasicLayout: React.FC = () => {
     });
   };
   const menuItems: MenuProps["items"] = getItems(
-    routes[0].children![0].children.filter((item) => item.path !== "*" &&  ( item.access === true || item.access === undefined))
+    routes[0].children![0].children.filter((item) => item.path !== "*" &&  ( item.access === true || item.access === undefined) && !item.path?.includes("id")) 
     )
   
 

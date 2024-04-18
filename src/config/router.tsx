@@ -50,16 +50,16 @@ const routes = [
         children: [
           {
             index: true,
-            title: "Dashboard",
+            title: "首页",
             icon: <DashboardOutlined />,
             element: <Dashboard />,
           },
-          {
-            path: "form",
-            title: "表单页",
-            icon: <EditOutlined />,
-            element: <FormPage />,
-          },
+          // {
+          //   path: "form",
+          //   title: "表单页",
+          //   icon: <EditOutlined />,
+          //   element: <FormPage />,
+          // },
           {
             path: "user",
             title: "用户管理",
@@ -74,22 +74,16 @@ const routes = [
             ],
           },
           {
-            path: "detail",
-            title: "详情页",
-            icon: <BarsOutlined />,
-            element: <DetailPage />,
-          },
-          {
             path: '/admin',
             title: '管理员管理',
             icon: <UsergroupAddOutlined /> ,
             access: authLoader().isSuperAdmin,
             children:[
-              {
-                path: '/admin',
-                title: "跳转页",
-                redirect: '/admin/sub-page',
-              },
+              // {
+              //   path: '/admin',
+              //   title: "跳转页",
+              //   redirect: '/admin/sub-page',
+              // },
               {
                 path: '/admin/index',
                 title: "管理员列表",
@@ -118,7 +112,18 @@ const routes = [
             path: "operation",
             title: "操作页",
             icon: <BarsOutlined />,
-            element: <OperationPage />,
+            children: [
+              {
+                path: "/operation/index",
+                title: "操作列表",
+                element: <OperationPage />,
+              },
+              {
+                path: "/operation/detail/:id",
+                title: "详情页",
+                element: <DetailPage />,
+              },
+            ],
           },
           {
             path: "*",

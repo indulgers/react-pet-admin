@@ -30,7 +30,10 @@ code {
   justify-content: center;
   align-items: center;
 }
-
+.ant-form-item{
+  margin-bottom: 0px;
+  margin: 5px;
+}
 .content_spin{
   width: 100%;
   height: 70%;

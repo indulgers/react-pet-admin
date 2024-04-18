@@ -215,7 +215,7 @@ const DoctorPage: React.FC = () => {
             ]}
             width="xs"
             name="sex"
-            label="权限设置"
+            label="性别"
           />
         </ProForm.Group>
         <ProForm.Group>

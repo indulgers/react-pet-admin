@@ -67,6 +67,7 @@ const columns: ProColumns<GithubIssueItem>[] = [
     valueEnum: {
       0: { text: "普通用户" },
       1: { text: "二级管理员" },
+      2: { text: "一级管理员" },
     },
     renderFormItem: (text, {record, index})=>{
       return authLoader().isSuperAdmin  ? <ProFormSelect
@@ -86,7 +87,7 @@ const columns: ProColumns<GithubIssueItem>[] = [
         ]}
         width="xs"
         name="role"
-        label="权限设置"
+
         />
         : <ProFormSelect
         options={[
@@ -105,7 +106,7 @@ const columns: ProColumns<GithubIssueItem>[] = [
         ]}
         width="xs"
         name="role"
-        label="权限设置"
+
         disabled
         />
     }

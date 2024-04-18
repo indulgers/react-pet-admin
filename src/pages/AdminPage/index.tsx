@@ -241,6 +241,7 @@ const AdminPage: React.FC = () => {
             width="md"
             name="nickname"
             label="用户名称"
+            disabled
             placeholder="请输入用户名称"
           />
         </ProForm.Group>
