@@ -51,6 +51,7 @@ const columns: ProColumns<GithubIssueItem>[] = [
     dataIndex: "nickname",
     copyable: true,
     ellipsis: true,
+    editable: false,
     tip: "标题过长会自动收缩",
     formItemProps: {
       rules: [
@@ -241,7 +242,6 @@ const AdminPage: React.FC = () => {
             width="md"
             name="nickname"
             label="用户名称"
-            disabled
             placeholder="请输入用户名称"
           />
         </ProForm.Group>
@@ -253,10 +253,10 @@ const AdminPage: React.FC = () => {
                 value: '1',
                 label: '二级管理员',
               },
-              {
-                value: '2',
-                label: '一级管理员',
-              }
+              // {
+              //   value: '2',
+              //   label: '一级管理员',
+              // }
             ]}
             width="xs"
             name="role"

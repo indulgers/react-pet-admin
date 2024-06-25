@@ -51,6 +51,7 @@ const columns: ProColumns<GithubIssueItem>[] = [
     copyable: true,
     ellipsis: true,
     tip: "标题过长会自动收缩",
+    editable: false,
     formItemProps: {
       rules: [
         {
@@ -68,6 +69,7 @@ const columns: ProColumns<GithubIssueItem>[] = [
       0: { text: "普通用户" },
       1: { text: "二级管理员" },
       2: { text: "一级管理员" },
+      3: { text: "医生" },
     },
     renderFormItem: (text, {record, index})=>{
       return authLoader().isSuperAdmin  ? <ProFormSelect
@@ -98,6 +100,10 @@ const columns: ProColumns<GithubIssueItem>[] = [
           {
             value: '2',
             label: '一级管理员',
+          },
+          {
+            value: '3',
+            label: '医生',
           },
           {
             value: '0',
@@ -246,8 +252,8 @@ const UserPage: React.FC = () => {
           <ProFormSelect
             options={[
               {
-                value: '1',
-                label: '二级管理员',
+                value: '0',
+                label: '普通用户',
               },
               // {
               //   value: '2',

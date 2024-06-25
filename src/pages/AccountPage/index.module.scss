@@ -1,0 +1,14 @@
+:global{
+    .ant-upload-list{
+        display: flex;
+    }
+    :where(.css-dev-only-do-not-override-1wa5km6)[class^="ant-form"] [class*=" ant-form"], :where(.css-dev-only-do-not-override-1wa5km6)[class*=" ant-form"] [class*=" ant-form"]{
+        margin: 5px 0;
+    }
+    :where(.css-dev-only-do-not-override-1t4hs6s).ant-form-horizontal .ant-form-item-control{
+        min-width: unset;
+    }
+    :where(.css-dev-only-do-not-override-1nq6wko).ant-upload-wrapper.ant-upload-picture-card-wrapper .ant-upload-list.ant-upload-list-picture-card .ant-upload-list-item{
+        width: 100px;
+    }
+}

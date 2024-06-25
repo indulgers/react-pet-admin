@@ -30,7 +30,7 @@ const BasicLayout: React.FC = () => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-  const { isAdmin, isSuperAdmin } = useLoaderData() as any;
+  const { isAdmin, isSuperAdmin, isDoctor } = useLoaderData() as any;
 
   const getItems: any = (children: RouteType[]) => {
     return children.map((item) => {
@@ -112,7 +112,7 @@ const BasicLayout: React.FC = () => {
             height: `calc(100vh - 128px)`,
           }}
         >
-          {isAdmin ? (
+          {isAdmin| isDoctor ? (
             <Suspense fallback={<Spin size="large" className="content_spin" />}>
               <Outlet />
             </Suspense>

@@ -15,7 +15,10 @@ import {
 
 const Dashboard = lazy(() => import("../pages/Dashboard"));
 const FormPage = lazy(() => import("../pages/FormPage"));
+const MessagePage = lazy(() => import("../components/TUIKit"));
 const UserPage = lazy(() => import("../pages/UserPage"));
+const PostPage = lazy(() => import("../pages/PostPage"));
+const MinePost = lazy(() => import("../pages/MinePostPage")); 
 const AdminPage = lazy(() => import("../pages/AdminPage"))
 const DoctorPage = lazy(() => import("../pages/DoctorPage"));
 const OperationPage = lazy(() => import("../pages/OperationPage"));
@@ -30,13 +33,15 @@ export const updateIsSuperAdmin = () => {
   const userInfoString = localStorage.getItem("userInfo") || "[]";
   const userInfo = JSON.parse(userInfoString);
   const userRole = userInfo?.state?.userInfo?.role;
-  return { userRole };
+  const userStatus = userInfo?.state?.userInfo?.status;
+  return { userRole, userStatus};
 }
 export function authLoader() {
-  const { userRole } = updateIsSuperAdmin();
-  const isAdmin = userRole === 1 || userRole === 2;
+  const { userRole,userStatus } = updateIsSuperAdmin();
+  const isAdmin = userRole === 1 || userRole === 2 || false ;
+  const isDoctor = userRole === 3 && userStatus === 1;
   const isSuperAdmin = userRole === 2;
-  return { isAdmin, isSuperAdmin};
+  return { isAdmin, isSuperAdmin, isDoctor};
 }
 
 const routes = [
@@ -52,6 +57,7 @@ const routes = [
             index: true,
             title: "首页",
             icon: <DashboardOutlined />,
+
             element: <Dashboard />,
           },
           // {
@@ -64,7 +70,7 @@ const routes = [
             path: "user",
             title: "用户管理",
             icon: <UserOutlined />,
-            isAdmin: false,
+            access: authLoader().isAdmin,
             children: [
               {
                 path: "/user/index",
@@ -95,6 +101,7 @@ const routes = [
             path: 'doctor',
             title: "医生管理",
             icon: <Icon name="doctor" />,
+            access: authLoader().isAdmin,
             children: [
               {
                 path: "/doctor/verify",
@@ -111,6 +118,7 @@ const routes = [
           {
             path: "operation",
             title: "操作页",
+            access: authLoader().isAdmin,
             icon: <BarsOutlined />,
             children: [
               {
@@ -131,13 +139,28 @@ const routes = [
           },
           {
             path: "account",
-            title: "个人页",
+            title: "帖子管理",
             icon: <UserOutlined />,
             children: [
               {
                 path: "/account/center",
                 title: "个人中心",
                 element: <AccountCenter />,
+              },
+              {
+                path: "/account/message",
+                title: "消息中心",
+                element: <MessagePage />, 
+              },
+              {
+                path: "/account/post",
+                title: '发布文章',
+                element: <PostPage />,
+              },
+              {
+                path: "/account/minePost",
+                title: '我的文章',
+                element: <MinePost />,
               },
               {
                 path: "/account/settings",

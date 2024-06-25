@@ -56,10 +56,17 @@ const Login = () => {
       const info = (await getUserInfo(res.data.user_id));
       setUserInfo(info.data);
       message.success("登录成功！");
+      if(info.data.role === 3){
+        navigate("/account/center");
+        return;
+      }
       navigate("/dashboard");
     } else {
       message.error(res.msg);
     }
+  };
+  const handleForgotPassword = () => {
+    
   };
   return (
     <div
@@ -173,7 +180,7 @@ const Login = () => {
         {loginType === "account" && (
           <>
             <ProFormText
-              name="username"
+              name="nickname"
               fieldProps={{
                 size: "large",
                 prefix: <UserOutlined className={"prefixIcon"} />,
@@ -272,6 +279,7 @@ const Login = () => {
             style={{
               float: "right",
             }}
+            onClick={handleForgotPassword}
           >
             忘记密码
           </a>
